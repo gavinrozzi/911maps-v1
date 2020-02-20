@@ -1,0 +1,50 @@
+{% include "calls/site_base.html" %}
+{% include "calls/navbar.html" %}
+{% load leaflet_tags %}
+{% leaflet_js %}
+{% leaflet_css %}
+<body>
+<section class="hero is-primary has-background-danger">
+  <div class="hero-body">
+    <div class="container">
+      <h1 class="title">
+        Agencies
+      </h1>
+      <h2 class="subtitle">
+        This site is tracking {{ total_agencies }} agencies covering {{ jurisdictions }} jurisdictions
+      </h2>
+    </div>
+  </div>
+</section>
+<section class="section">
+    <nav class="breadcrumb" aria-label="breadcrumbs">
+        <ul>
+          <li>
+            <a href="/">
+              <span class="icon is-small">
+                <i class="fas fa-home" aria-hidden="true"></i>
+              </span>
+              <span>Home</span>
+            </a>
+          </li>
+          <li class="is-active">
+            <a href="#">
+              <span class="icon is-small">
+                <i class="fas fa-list-ul" aria-hidden="true"></i>
+              </span>
+              <span>Agencies</span>
+            </a>
+          </li>
+        </ul>
+      </nav>
+    </section>
+<section class="section">
+{% for agency in agency_list %}
+<div class="list is-hoverable">
+        <a class="list-item" href="/agency/{{ agency.id }}">
+        {{ agency.name }}
+        </a>
+{% endfor %}
+</div>
+</section>
+{% include "calls/footer.html" %}

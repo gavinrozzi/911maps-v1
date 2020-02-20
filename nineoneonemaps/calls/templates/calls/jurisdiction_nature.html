@@ -1,0 +1,114 @@
+{% include "calls/site_base.html" %}
+{% include "calls/navbar.html" %}
+{% load leaflet_tags %}
+{% leaflet_js %}
+{% leaflet_css %}
+{% load geojson_tags %}
+<script src="https://cdn.jsdelivr.net/npm/leaflet-ajax@2.1.0/dist/leaflet.ajax.js"></script>
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.0/jquery.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/leaflet.heat@0.2.0/dist/leaflet-heat.min.js"></script>
+<body>
+<section class="hero is-primary has-background-danger">
+  <div class="hero-body">
+    <div class="container">
+      <h1 class="title">
+      {{ call_nature|title }} calls in {{ jurisdiction_name|title }}
+      </h1>
+      <h2 class="subtitle">
+        Click call for details
+      </h2>
+    </div>
+  </div>
+</section>
+<section class="section">
+    <nav class="breadcrumb" aria-label="breadcrumbs">
+        <ul>
+          <li>
+            <a href="/">
+              <span class="icon is-small">
+                <i class="fas fa-home" aria-hidden="true"></i>
+              </span>
+              <span>Home</span>
+            </a>
+          </li>
+          <li>
+              <a href="/jurisdiction/{{ jurisdiction_name }}">
+                <span class="icon is-small">
+                  <i class="fas fa-location-arrow" aria-hidden="true"></i>
+                </span>
+                <span>{{ jurisdiction_name|title }}</span>
+              </a>
+            </li>
+          <li>
+              <a href="/natures/">
+                <span class="icon is-small">
+                  <i class="fas fa-check-square" aria-hidden="true"></i>
+                </span>
+                <span>By Nature</span>
+              </a>
+            </li>
+          <li class="is-active">
+            <a href="#">
+              <span class="icon is-small">
+                <i class="fas fa-info-circle" aria-hidden="true"></i>
+              </span>
+              <span>{% filter force_escape|title %} {{ call_nature }} {% endfilter %}</span>
+            </a>
+          </li>
+        </ul>
+      </nav>
+    </section>
+<section class="section">
+<h4 class ="subtitle">{{ jurisdiction_name|title }} had {{ total_calls }} <strong>{{ call_nature|lower }}</strong> calls
+between {{ oldest_call.sent }} and {{ newest_call.sent }}</h3>
+</section>
+<script type="text/javascript">
+function map_init(map, options) {
+    var collection = {{ calls_as_geojson|safe }};
+    geoJson2heat = function(geojson) {
+      return geojson.features.map(function(feature) {
+      return [parseFloat(feature.geometry.coordinates[1]), parseFloat(feature.geometry.coordinates[0])];
+      });
+      }
+    var geoData = geoJson2heat(collection, 1);
+    var heatMap = new L.heatLayer(geoData,{radius: 85, blur: 25, maxZoom: 17});
+    //function onEachFeature(feature, layer) {
+    //    layer.bindPopup(feature.properties.description + feature.properties.sent);
+    //}
+
+    //L.geoJson(collection, {
+      //onEachFeature: onEachFeature
+    //}).addTo(map);
+    map.addLayer(heatMap); 
+  }
+</script>
+{% leaflet_map "map" callback="map_init" %}
+
+<section class ="section">
+{% block content %}
+<table class="table is-hoverable is-fullwidth">
+<thead>
+<tr>
+ <th>Date</th>
+ <th>Description</th>    
+ <th>Building</th>
+ <th>Address</th>
+ <th>Priority</th>
+</tr>    
+<tbody>
+{% for call in calls %}
+    <tr>
+    <td>{{ call.received }}</td>
+    <td><a href="/call/{{ call.id }}/">{{ call.description }}</a></td>
+    <td>{{ call.place }}</td>
+    <td>{{ call.address }}</td>
+    <td>{{ call.priority }}</td>
+  </tr>
+{% endfor %}
+</tbody>
+</table>
+{% endblock %}
+</section>
+</body>
+
+{% include "calls/footer.html" %}

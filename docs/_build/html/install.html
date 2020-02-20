@@ -1,0 +1,316 @@
+
+
+<!DOCTYPE html>
+<!--[if IE 8]><html class="no-js lt-ie9" lang="en" > <![endif]-->
+<!--[if gt IE 8]><!--> <html class="no-js" lang="en" > <!--<![endif]-->
+<head>
+  <meta charset="utf-8">
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  
+  <title>Installation &mdash; 911maps 0.1 documentation</title>
+  
+
+  
+  
+  
+  
+
+  
+  <script type="text/javascript" src="_static/js/modernizr.min.js"></script>
+  
+    
+      <script type="text/javascript" id="documentation_options" data-url_root="./" src="_static/documentation_options.js"></script>
+        <script type="text/javascript" src="_static/jquery.js"></script>
+        <script type="text/javascript" src="_static/underscore.js"></script>
+        <script type="text/javascript" src="_static/doctools.js"></script>
+        <script type="text/javascript" src="_static/language_data.js"></script>
+    
+    <script type="text/javascript" src="_static/js/theme.js"></script>
+
+    
+
+  
+  <link rel="stylesheet" href="_static/css/theme.css" type="text/css" />
+  <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" />
+    <link rel="next" title="Importing Data" href="importdata.html" />
+    <link rel="prev" title="Welcome to the 911maps documentation!" href="index.html" /> 
+</head>
+
+<body class="wy-body-for-nav">
+
+   
+  <div class="wy-grid-for-nav">
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+          
+
+          
+            <a href="index.html" class="icon icon-home"> 911maps
+          
+
+          
+          </a>
+
+          
+            
+            
+          
+
+          
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+
+          
+        </div>
+
+        <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+          
+            
+            
+              
+            
+            
+              <p class="caption"><span class="caption-text">Contents:</span></p>
+<ul class="current">
+<li class="toctree-l1 current"><a class="current reference internal" href="#">Installation</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="#system-prerequisites">System Prerequisites</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#assumptions">Assumptions</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#getting-911maps">Getting 911maps</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#setup-virtual-environment">Setup Virtual Environment</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#activate-virtual-environment">Activate Virtual Environment</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#install-python-packages">Install Python Packages</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#get-ready-for-first-use">Get Ready For First Use</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#initialize-database">Initialize Database</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#create-admin-account">Create Admin Account</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#collect-static-files">Collect Static Files</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#start-test-web-server">Start Test Web Server</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="importdata.html">Importing Data</a></li>
+</ul>
+
+            
+          
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" aria-label="top navigation">
+        
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="index.html">911maps</a>
+        
+      </nav>
+
+
+      <div class="wy-nav-content">
+        
+        <div class="rst-content">
+        
+          
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div role="navigation" aria-label="breadcrumbs navigation">
+
+  <ul class="wy-breadcrumbs">
+    
+      <li><a href="index.html">Docs</a> &raquo;</li>
+        
+      <li>Installation</li>
+    
+    
+      <li class="wy-breadcrumbs-aside">
+        
+            
+            <a href="_sources/install.rst.txt" rel="nofollow"> View page source</a>
+          
+        
+      </li>
+    
+  </ul>
+
+  
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+            
+  <div class="section" id="installation">
+<h1>Installation<a class="headerlink" href="#installation" title="Permalink to this headline">¶</a></h1>
+<p>This document will show you how to get 911maps running on your system.</p>
+<p>Currently install has been tested with Ubuntu, but will work with any system that can run Python and Django.</p>
+<div class="section" id="system-prerequisites">
+<h2>System Prerequisites<a class="headerlink" href="#system-prerequisites" title="Permalink to this headline">¶</a></h2>
+<ul class="simple">
+<li><p>Linux Machine (tested with WSL bash on Windows)</p></li>
+<li><p><a class="reference external" href="https://www.python.org/">Python</a> 3.6+</p></li>
+<li><p><a class="reference external" href="https://virtualenv.pypa.io/en/stable/">Virtualenv</a></p></li>
+<li><p><a class="reference external" href="https://pypi.python.org/pypi/pip">PIP</a>  Should be installed with Python 3</p></li>
+<li><p><a class="reference external" href="https://git-scm.com/">git</a></p></li>
+</ul>
+<p>Using apt-get:</p>
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$</span> sudo apt-get install python3-dev python3-virtualenv python3-pip git gdal-bin
+</pre></div>
+</div>
+</div>
+<div class="section" id="assumptions">
+<h2>Assumptions<a class="headerlink" href="#assumptions" title="Permalink to this headline">¶</a></h2>
+<ul class="simple">
+<li><p><a class="reference internal" href="#data-export">Data export</a> obtained from an Active911 instance (see test data folder for an example)</p></li>
+<li><p>Virtualenv with a name of env</p></li>
+</ul>
+</div>
+<div class="section" id="getting-911maps">
+<span id="data-export"></span><h2>Getting 911maps<a class="headerlink" href="#getting-911maps" title="Permalink to this headline">¶</a></h2>
+<p>The source is on GitHub, use git to clone the repository. Starting from your home directory of <code class="docutils literal notranslate"><span class="pre">/home/911maps</span></code></p>
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$</span> git clone https://github.com/gavinrozzi/911maps.git
+</pre></div>
+</div>
+<p>This command will download the latest version of 911maps</p>
+</div>
+<div class="section" id="setup-virtual-environment">
+<h2>Setup Virtual Environment<a class="headerlink" href="#setup-virtual-environment" title="Permalink to this headline">¶</a></h2>
+<p>Setup a new Python 3.x virtual environment in the <code class="docutils literal notranslate"><span class="pre">env</span></code> direcory. Set the visual prompt to <code class="docutils literal notranslate"><span class="pre">(911maps)</span></code>.</p>
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$</span> <span class="nb">cd</span> 911maps
+<span class="gp">$</span> virtualenv -p python3 env --prompt<span class="o">=</span><span class="s1">&#39;(911maps)&#39;</span>
+</pre></div>
+</div>
+</div>
+<div class="section" id="activate-virtual-environment">
+<h2>Activate Virtual Environment<a class="headerlink" href="#activate-virtual-environment" title="Permalink to this headline">¶</a></h2>
+<p>You will need to re run this step each time you start a new shell or log into your machine.</p>
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$</span> <span class="nb">source</span> env/bin/activate
+</pre></div>
+</div>
+<p>This will set you into a new python environment any packages you install via <code class="docutils literal notranslate"><span class="pre">pip</span></code> will only live in this area and do not touch your system files. This allowed you to have multiple projects with different dependencies.</p>
+<p>You can use the command <code class="docutils literal notranslate"><span class="pre">deactivate</span></code> to exit back to your normal system environment.</p>
+</div>
+<div class="section" id="install-python-packages">
+<h2>Install Python Packages<a class="headerlink" href="#install-python-packages" title="Permalink to this headline">¶</a></h2>
+<p>Using pip install all required packages from the <code class="docutils literal notranslate"><span class="pre">requirements.txt</span></code> file.</p>
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">(911maps)$</span> pip3 install -r requirements.txt
+</pre></div>
+</div>
+</div>
+<div class="section" id="get-ready-for-first-use">
+<h2>Get Ready For First Use<a class="headerlink" href="#get-ready-for-first-use" title="Permalink to this headline">¶</a></h2>
+</div>
+<div class="section" id="initialize-database">
+<h2>Initialize Database<a class="headerlink" href="#initialize-database" title="Permalink to this headline">¶</a></h2>
+<p>Using the <a class="reference external" href="https://docs.djangoproject.com/en/dev/ref/django-admin/">django manage.py</a> command to build the new database.</p>
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">(911maps)$</span> ./manage.py migrate
+</pre></div>
+</div>
+</div>
+<div class="section" id="create-admin-account">
+<h2>Create Admin Account<a class="headerlink" href="#create-admin-account" title="Permalink to this headline">¶</a></h2>
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">(911maps)$</span> ./manage.py createsuperuser
+<span class="go">Username: test</span>
+<span class="go">Email address: test@sample.com</span>
+<span class="go">Password: mypassword</span>
+<span class="go">Password (again): mypassword</span>
+<span class="go">Superuser created successfully.</span>
+</pre></div>
+</div>
+</div>
+<div class="section" id="collect-static-files">
+<h2>Collect Static Files<a class="headerlink" href="#collect-static-files" title="Permalink to this headline">¶</a></h2>
+<p>Using the <code class="docutils literal notranslate"><span class="pre">manage.py</span></code> command</p>
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">(911maps)$</span> ./manage.py collectstatic
+</pre></div>
+</div>
+</div>
+<div class="section" id="start-test-web-server">
+<h2>Start Test Web Server<a class="headerlink" href="#start-test-web-server" title="Permalink to this headline">¶</a></h2>
+<p>First note this is not full producation ready server. It can handle a couple users.</p>
+<p>Using the <code class="docutils literal notranslate"><span class="pre">manage.py</span></code> command again</p>
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">(911maps)$</span> ./manage.py runserver
+</pre></div>
+</div>
+<p>This will start the server up listening on the local loopback address on port <code class="docutils literal notranslate"><span class="pre">8000</span></code>. Start your web browser and go to <a href="#id1"><span class="problematic" id="id2">`http://localhost:8000/calls`_</span></a>. You should seen the main page
+Visit <code class="docutils literal notranslate"><span class="pre">localhost:8000/admin/</span></code> to log into the admin area with the account you created.</p>
+<p>If you are running this on a remote server you need to have the web server use its public IP adress so you can connect.</p>
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">(911maps)$</span> ./manage.py runserver <span class="m">0</span>.0.0.0:8000
+</pre></div>
+</div>
+<p>This will run the server also on port 8000 but will be accessible via the server’s IP address or dns name on port <code class="docutils literal notranslate"><span class="pre">8000</span></code> also.</p>
+<p>Do not attempt to use the test web server in a production deployment, it can only handle a few users and is not suitable for production.</p>
+</div>
+</div>
+
+
+           </div>
+           
+          </div>
+          <footer>
+  
+    <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
+      
+        <a href="importdata.html" class="btn btn-neutral float-right" title="Importing Data" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right"></span></a>
+      
+      
+        <a href="index.html" class="btn btn-neutral float-left" title="Welcome to the 911maps documentation!" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left"></span> Previous</a>
+      
+    </div>
+  
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>
+        &copy; Copyright 2019, Gavin Rozzi
+
+    </p>
+  </div>
+  Built with <a href="http://sphinx-doc.org/">Sphinx</a> using a <a href="https://github.com/rtfd/sphinx_rtd_theme">theme</a> provided by <a href="https://readthedocs.org">Read the Docs</a>. 
+
+</footer>
+
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+  
+
+
+  <script type="text/javascript">
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script>
+
+  
+  
+    
+   
+
+</body>
+</html>

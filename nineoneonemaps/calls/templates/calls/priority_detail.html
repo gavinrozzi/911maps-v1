@@ -1,0 +1,23 @@
+{% include "calls/site_base.html" %}
+{% include "calls/navbar.html" %}
+{% load leaflet_tags %}
+{% leaflet_js %}
+{% leaflet_css %}
+{% block content %}
+<body>
+        <section class="hero is-primary">
+          <div class="hero-body">
+            <div class="container">
+              <h1 class="title">
+                Calls by priority
+              </h1>
+              <h2 class="subtitle">
+                Click call for details {{ call_priority }}
+              </h2>
+            </div>
+          </div>
+        </section>
+
+{{ call_priority }}
+
+{% endblock %}

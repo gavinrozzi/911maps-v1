@@ -1,0 +1,109 @@
+{% include "calls/site_base.html" %}
+{% include "calls/navbar.html" %}
+{% load leaflet_tags %}
+{% leaflet_js %}
+{% leaflet_css %}
+{% load geojson_tags %}
+<script src="https://cdn.jsdelivr.net/npm/leaflet-ajax@2.1.0/dist/leaflet.ajax.js"></script>
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.0/jquery.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/leaflet.heat@0.2.0/dist/leaflet-heat.min.js"></script>
+<body>
+<section class="hero is-primary has-background-danger">
+  <div class="hero-body">
+    <div class="container">
+      <h1 class="title">
+        All Calls at {% filter force_escape|title %} {{ place_name }} {% endfilter %}
+      </h1>
+      <h2 class="subtitle">
+        Tracking {{ total_calls }} incidents since {{ oldest_call.received|date }}
+      </h2>
+    </div>
+  </div>
+</section>
+<section class="section">
+    <nav class="breadcrumb" aria-label="breadcrumbs">
+        <ul>
+          <li>
+            <a href="/">
+              <span class="icon is-small">
+                <i class="fas fa-home" aria-hidden="true"></i>
+              </span>
+              <span>Home</span>
+            </a>
+          </li>
+          <li>
+                <span class="icon is-small">
+                  <i class="fas fa-directions" aria-hidden="true"></i>
+                </span>
+                <span>Places</span>
+              </a>
+            </li>
+          <li class="is-active">
+            <a href="#">
+              <span class="icon is-small">
+                <i class="fas fa-map-signs" aria-hidden="true"></i>
+              </span>
+              <span>{% filter force_escape|title %} {{ place_name }} {% endfilter %}</span>
+            </a>
+          </li>
+        </ul>
+      </nav>
+    </section>
+<script type="text/javascript">
+  function map_init(map, options) {
+      var collection = {{ calls_as_geojson|safe }};
+      geoJson2heat = function(geojson) {
+        return geojson.features.map(function(feature) {
+        return [parseFloat(feature.geometry.coordinates[1]), parseFloat(feature.geometry.coordinates[0])];
+        });
+        }
+      var geoData = geoJson2heat(collection, 1);
+      var heatMap = new L.heatLayer(geoData,{radius: 25, blur: 25, maxZoom: 15});
+      //function onEachFeature(feature, layer) {
+      //    layer.bindPopup(feature.properties.description + feature.properties.sent);
+      //}
+  
+      //L.geoJson(collection, {
+        //onEachFeature: onEachFeature
+      //}).addTo(map);
+      map.addLayer(heatMap); 
+    }
+  </script>
+<section class ="section">
+{% leaflet_map "map" callback="map_init" %}
+</section>
+<section class ="section">
+{% block content %}
+<article class="message is-info">
+  <div class="message-header">
+    <p>Important Note</p>
+    <button class="delete" aria-label="delete"></button>
+  </div>
+  <div class="message-body">
+    The information presented on this website and used to generate maps was directly entered by <strong>real 911 dispatchers</strong> and obtained under the New Jersey Open Public Records Act.
+  </div>
+</article>
+<table class="table is-hoverable is-fullwidth">
+<thead>
+<tr>
+ <th>Date</th>
+ <th>Description</th>    
+ <th>Building</th>
+ <th>Address</th>
+</tr>    
+<tbody>
+{% for call in place_call_list %}
+    <tr>
+    <td>{{ call.received }}</td>
+    <td><a href="/call/{{ call.id }}/">{{ call.description }}</a></td>
+    <td>{{ call.place }}</td>
+    <td>{{ call.address }}</td>
+  </tr>
+{% endfor %}
+</tbody>
+</table>
+{% endblock %}
+</section>
+</body>
+
+{% include "calls/footer.html" %}

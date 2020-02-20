@@ -1,0 +1,80 @@
+<!-- 911maps/nineoneonemaps/calls/templatesindex.html -->
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bulma/0.7.4/css/bulma.css">
+    <script defer src="https://use.fontawesome.com/releases/v5.6.0/js/all.js"></script>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Delivery logs for {{ call.description }} - 911maps</title>
+</head>
+{% include "calls/navbar.html" %}
+{% load leaflet_tags %}
+{% leaflet_js %}
+{% leaflet_css %}
+{% block content %}
+<section class="hero is-primary">
+    <div class="hero-body has-background-danger">
+      <div class="container">
+        <h1 class="title">
+          Call delivery logs for: {{ call.description }}
+        </h1>
+        <h2 class="subtitle">
+            <strong>Dispatched at:</strong> {{ call.sent }}, {{ call.sent|timesince }} ago
+            <br>
+            <strong>Units:</strong> {{ call.units }}
+            <br>
+            <strong>Priority:</strong> {{ call.priority }}
+            <br>
+            <strong>Active911 Incident #</strong> {{ call.id }}
+            <br>
+            {% if call.source %}
+            <strong>Source:</strong> {{ call.source }}
+            {% endif %}
+            <br>
+            <i class="fas fa-arrow-left"></i><a href="/call/{{ call.id }}/"> Go back to call details</a>
+            </h2>
+      </div>
+    </div>
+  </section>
+  <div class="card">
+    <header class="card-header">
+      <p class="card-header-title">
+        Call Messages
+
+      </p>
+      <a href="#messages" class="card-header-icon" aria-label="more options">
+        <span class="icon">
+          <i class="fas fa-angle-down" aria-hidden="true"></i>
+        </span>
+      </a>
+    </header>
+    <div class="card-content">
+      <div class="content">
+        {{ call.messages }}
+        <br>
+      </div>
+    </div>
+  </div>
+  <div class="card">
+    <header class="card-header">
+      <p class="card-header-title">
+        Call Responses
+      </p>
+      <a href="#responses" class="card-header-icon" aria-label="more options">
+        <span class="icon">
+          <i class="fas fa-angle-down" aria-hidden="true"></i>
+        </span>
+      </a>
+    </header>
+    <div class="card-content">
+      <div class="content">
+        {{ call.messages }}
+        <br>
+      </div>
+    </div>
+  </div>
+
+{% endblock %}

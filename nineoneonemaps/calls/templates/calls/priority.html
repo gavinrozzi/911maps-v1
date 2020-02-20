@@ -1,0 +1,133 @@
+{% include "calls/site_base.html" %}
+{% include "calls/navbar.html" %}
+{% load leaflet_tags %}
+{% leaflet_js %}
+{% leaflet_css %}
+{% block content %}
+<body>
+        <section class="hero is-primary has-background-danger">
+          <div class="hero-body">
+            <div class="container">
+              <h1 class="title">
+                Calls by priority
+              </h1>
+              <h2 class="subtitle">
+                Click call for details {{ call_priority }}
+              </h2>
+            </div>
+          </div>
+        </section>
+        <section class="section">
+            <nav class="breadcrumb" aria-label="breadcrumbs">
+                <ul>
+                  <li>
+                    <a href="/">
+                      <span class="icon is-small">
+                        <i class="fas fa-home" aria-hidden="true"></i>
+                      </span>
+                      <span>Home</span>
+                    </a>
+                  </li>
+                  <li class="is-active">
+                    <a href="#">
+                      <span class="icon is-small">
+                        <i class="fas fa-chart-bar" aria-hidden="true"></i>
+                      </span>
+                      <span>By Priority</span>
+                    </a>
+                  </li>
+                </ul>
+              </nav>
+            </section>
+        <section class ="section">
+            <article class="message is-warning">
+                <div class="message-body">
+                <strong>Caveat emptor!</strong>, the dispatching agencies tracked on this site may differ in how they code their calls, so be careful about how you read the data on this page. Some may not follow traditional conventions and label non-emergent calls as priority 3, rather than 1.
+                </div>
+              </article>
+        <nav class="level">
+                <div class="level-item has-text-centered ">
+                  <div>
+                    <p class="heading">Priority 1 Calls</p>
+                    <p class="title">{{ total_code1 }}</p>
+                    <p class="body"> Routine calls, lowest urgency</p>
+                    {% if code1 %}
+                    <br>
+                    🚨
+                    <br>
+                    <strong>Latest Incidents:</strong>
+                    <ul>
+                        {% for call in code1|slice:":5" %}
+                            <li><a href="/call/{{ call.id }}/">{{ call.description }} on {{ call.sent }} </a></li>
+                        {% endfor %}
+                        {% else %}
+                        <p>No priority 1 calls are available.</p>
+                        </ul>
+                    {% endif %}
+                </div>
+                </div>
+                <div class="level-item has-text-centered">
+                  <div>
+                    <p class="heading">Priority 2 Calls</p>
+                    <p class="title">{{ total_code2 }}</p>
+                    <p class="body"> Routine calls</p>
+                    {% if code2 %}
+                    <br>
+                    🚨🚨
+                    <br>
+                    <strong>Latest Incidents:</strong>
+                    <ul>
+                        {% for call in code2|slice:":5" %}
+                            <li><a href="/call/{{ call.id }}/">{{ call.description }} on {{ call.sent }} </a></li>
+                        {% endfor %}
+                        {% else %}
+                        <p>No priority 2 calls are available.</p>
+                        </ul>
+                    {% endif %}
+                </div>
+                </div>
+                <div class="level-item has-text-centered">
+                  <div>
+                    <p class="heading">Priority 3 Calls</p>
+                    <p class="title">{{ total_code3 }}</p>
+                    <p class="body"> Most urgent, lights & sirens</p>
+                    {% if code3 %}
+                    <br>
+                    🚨🚨🚨
+                    <br>
+                    <strong>Latest Incidents:</strong>
+                    <ul>
+                        {% for call in code3|slice:":5" %}
+                            <li><a href="/call/{{ call.id }}/">{{ call.description }} on {{ call.sent }} </a></li>
+                        {% endfor %}
+                        {% else %}
+                        <p>No priority 3 calls are available.</p>
+                        </ul>
+                    {% endif %}
+                </div>
+                </div>
+                <div class="level-item has-text-centered">
+                        <div>
+                          <p class="heading">No Priority</p>
+                          <p class="title">{{ total_no_priority }}</p>
+                          <p class="body"> General announcements</p>
+                          {% if no_priority %}
+                          <br>
+                          ❌
+                          <br> 
+                          <strong>Latest Incidents:</strong>
+                          <ul>
+                              {% for call in no_priority|slice:":5" %}
+                                  <li><a href="/call/{{ call.id }}/">{{ call.description }} on {{ call.sent }} </a></li>
+                              {% endfor %}
+                              {% else %}
+                              <p>No priority 0 calls are available.</p>
+                              </ul>
+                          {% endif %}
+                      </div>
+                      </div>
+              </nav>
+            </section>  
+{% endblock %}
+</body>
+{% include "calls/footer.html" %}

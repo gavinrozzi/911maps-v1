@@ -1,0 +1,208 @@
+<!-- 911maps/nineoneonemaps/calls/templatesindex.html -->
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bulma/0.7.4/css/bulma.css">
+    <script defer src="https://use.fontawesome.com/releases/v5.6.0/js/all.js"></script>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="shortcut icon" href="/static/favicon.ico" />
+    <title>{{ call.city|title }}: {{ call.description|title }}  on {{ call.sent }} - 911maps</title>
+</head>
+{% include "calls/navbar.html" %}
+{% load leaflet_tags %}
+{% load geojson_tags %}
+{% load social_share %}
+{% leaflet_js %}
+{% leaflet_css %}
+{% block content %}
+<body>
+<section class="hero is-primary has-background-danger has-text-centered">
+  <div class="hero-body">
+    <div class="container">
+      <h1 class="title">
+        <strong><a href="/jurisdiction/{{ call.city }}">{{ call.city|upper }}:</a></strong>
+      </h1>
+      <h2 class="subtitle is-4">
+          <strong><a href="/nature/{{ call.description }}/">{{ call.description }}</a></strong>
+      </h2>
+      <h2 class="subtitle">
+        {{ call.sent }}
+        <br> 
+        {% if call.units %}
+        <strong>Units dispatched:</strong> {{ call.units }} 
+        <br>
+        {% endif %}
+        {% if call.source %}
+        <strong>Source:</strong> {{ call.source }}
+        <br>
+        {% endif %}
+        <br>   
+      </h2>
+    </div>
+  </div>
+</section>
+<section class="section">
+    <nav class="breadcrumb" aria-label="breadcrumbs">
+        <ul>
+          <li>
+            <a href="/">
+              <span class="icon is-small">
+                <i class="fas fa-home" aria-hidden="true"></i>
+              </span>
+              <span>Home</span>
+            </a>
+          </li>
+          <li>
+              <a href="/jurisdiction/{{ call.city }}">
+                <span class="icon is-small">
+                  <i class="fas fa-map-signs" aria-hidden="true"></i>
+                </span>
+                <span>{{ call.city|title }}</span>
+              </a>
+            </li>
+            <li>
+                <a href="/jurisdiction/{{ call.city }}/nature/{{ call.description }}">
+                  <span>{% filter force_escape|title %} {{ call.description }} {% endfilter %}</span>
+                </a>
+              </li>
+          <li class="is-active">
+            <a href="#">
+              <span class="icon is-small">
+                <i class="fas fa-map-marker-alt" aria-hidden="true"></i>
+              </span>
+              <span>This Incident</span>
+            </a>
+          </li>
+        </ul>
+      </nav>
+    </section>
+<div class="box">
+    <div class="columns">
+      <div class="column">
+        {% if call.place %}
+        <h2><strong><a href="/place/{{ call.place }}/">{{ call.place|title }}</a></strong></h2>
+        {% endif %}
+        <h4><i class="fas fa-location-arrow"></i> <strong>{{ call.address|title }}</strong> - {{ call.city|title }}, {{ call.state }}</h4>
+        {% if call.cross_street %}
+        <small>Cross street: {{ call.cross_street|title }}</small>
+        <br>
+        {% endif %}
+        <small>Dispatched by: <a href="/agency/{{ call.agency.id }}/">{{ call.agency.name }}</a></small>
+        <br>
+        {% if call.priority %}
+        Priority: {{ call.priority }} {% if call.priority is 1 %} 🚨 {% elif call.priority is 2 %} 🚨🚨 {% elif call.priority is 3 %} 🚨🚨🚨 {% endif %}
+        <br>
+        {% endif %}
+        Occured: {{ call.sent|timesince }} ago
+        <br>
+        Active911 Incident #{{ call.id }}
+        <br>
+        {% if call.cad_code %}
+        Department Case #{{ call.cad_code }}
+        <br>
+        {% endif %}
+        {% if call.messages != 'null' %}<a href="/call-logs/{{ call.id }}/"><i class="fas fa-broadcast-tower"></i> View delivery logs</a> |{% endif %}<a href="/jurisdiction/{{ call.city }}">
+        <a href="https://www.google.com/maps?layer=c&cbll={{ call.lat }},{{ call.lon }}"><i class="fas fa-street-view"></i> Street view</a> 
+        {{ call.details }}
+          <br>
+          &nbsp;
+          <br>
+       <a class = "button is-warning" href="https://opramachine.com/new/{% if "WARETOWN" in call.city %}waretown{% endif %}/?title={% filter force_escape|title %}{{ call.city }} - {{ call.description }} - {{ call.sent|date }} {% endfilter %}&default_letter=Please provide electronic copies of CAD incident and detail reports and narratives for the&nbsp;{% filter force_escape|title %}{{ call.description }}{% endfilter %} call at{% filter force_escape|title %} {{ call.place }} {{ call.address }}, {{ call.city }},{% endfilter %} {{ call.state }} on {{ call.sent }} The case number of this incident in the CAD is {{ call.cad_code }}.&tags=911maps"><i class="fas fa-file-import"></i>&nbsp;Request details about this incident</a>
+       <nav class="level is-mobile">
+        <div class="level-left">
+          <a class="level-item" aria-label="reply">
+            <span class="icon is-small">
+                <i class="fab fa-twitter"></i>
+                {% post_to_twitter "{{ call.city|title }}: {{ call.description|title }}, {{ call.sent }}." object_or_url "Tweet this" %}
+            </span>
+          </a>
+          <br>
+          &nbsp;
+          &nbsp;
+          <a class="level-item" aria-label="retweet">
+            <span class="icon is-small">
+              <i class="fab fa-facebook-square" aria-hidden="true"></i>
+              {% post_to_facebook object_or_url "Post to Facebook" %}
+            </span>
+          </a>
+          <br>
+          &nbsp;
+          &nbsp;
+          <a class="level-item" aria-label="like">
+            <span class="icon is-small">
+              <i class="fas fa-envelope-open-text" aria-hidden="true"></i>
+              {% send_email object.title "{{ call.city|title }}: {{ call.description|title }}, {{ call.sent }}" object_or_url "Email" %}
+            </span>
+          </a>
+        </div>
+      </nav>
+      </div>
+       <div class="column">
+        <script type="text/javascript">
+          function map_init(map, options) {
+            function customTip() {
+              this.unbindTooltip();
+              if(!this.isPopupOpen()) this.bindTooltip("{{ call.description }}").openTooltip();
+          }
+          
+          function customPop() {
+              this.unbindTooltip();
+          }
+              var lat = "{{ call.lat }}";
+              var lon = "{{ call.lon }}";
+              var marker = L.marker([lat, lon])
+              marker.bindPopup('<a href="/call/{{ call.id }}/">{{ call.description }}</a> <br>{{ call.address }},\
+               {{ call.city }} {{ call.state }}<br>{{ call.sent }}</a>').openPopup();
+              marker.addTo(map);
+              marker.on('mouseover', customTip);
+              marker.on('click', customPop);
+              map.setView([lat, lon], 16);
+          }
+        </script>
+        {% leaflet_map "map" callback="map_init" %}  
+      </div>
+      {% if address_calls %}
+      <div class="column">
+      <strong>Call history for {{ call.address|title }}:</strong>
+      <br>
+      <strong>{{ address_call_count }}</strong> {% if address_call_count > 1 %} total incidents {% else %} call {% endif %} at this address since {{ first_related_call.sent|date }}.
+      <br>
+      <ul>
+          {% for address_call in address_calls %}
+              <li><a href="/call/{{ address_call.id }}/"><strong>{{ address_call.description|title }}</strong> on {{ address_call.sent|date }} </a></li>
+          {% endfor %}
+         </ul>
+     </div>
+     {% endif %}
+     {% if nearby_calls %}
+     <div class="column">
+     <strong>Nearby incidents:</strong>
+     <br>
+     <strong>{{ nearby_call_count }}</strong> calls within 1 mile of this address since {{ first_related_call.sent|date }}. <br><small>Showing first 5:</small>
+     <br>
+     <ul>
+         {% for nearby_call in nearby_calls %}
+             <li><a href="/call/{{ nearby_call.id }}/"><strong>{{ nearby_call.description|title }} at {% if nearby_cal.place %}{{ nearby_cal.place|title }} at {% endif %} {{ nearby_call.address|title }}</strong> on {{ nearby_call.sent|date }} </a></li>
+         {% endfor %}
+        </ul> 
+    </div>
+    {% endif %}
+      {% if related_calls %}
+       <div class="column">
+       <strong>Other<a href="/jurisdiction/{{ call.city }}/nature/{{ call.description }}"> {{ call.description|lower }} calls in {{ call.city|title }}</a>:</strong>
+       <br>
+       <strong>{{ related_call_count }}</strong> calls since {{ first_related_call.sent|date }}. <br><small>Showing first 5:</small>
+       <br>
+       <ul>
+           {% for related_call in related_calls %}
+               <li><a href="/call/{{ related_call.id }}/"><strong>{% if related_call.place %}{{ related_call.place|title }} at {% endif %} {{ related_call.address|title }}</strong> on {{ related_call.sent|date }} </a></li>
+           {% endfor %}
+          </ul> 
+      </div>
+      {% endif %}
+ </div>    
+{% include "calls/footer.html" %}
+{% endblock %}

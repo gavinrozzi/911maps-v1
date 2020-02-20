@@ -1,0 +1,99 @@
+{% include "calls/site_base.html" %}
+{% include "calls/navbar.html" %}
+{% load leaflet_tags %}
+{% leaflet_js %}
+{% leaflet_css %}
+<body>
+      <section class="hero is-medium is-primary is-bold has-text-centered">
+        <div class="hero-body has-background-danger">
+          <div class="container">
+            <h1 class="title">
+              Map and analyze emergency incidents & responses
+            </h1>
+          </div>
+          <section class="section has-text-centered ">This site is tracking the following:</section>
+          <nav class="level">
+              <div class="level-item has-text-centered">
+                <div>
+                  <p class="heading">Total Incidents</p>
+                  <p class="title">{{total_call_count }}</p>
+                </div>
+              </div>
+              <div class="level-item has-text-centered">
+                <div>
+                  <p class="heading">Jurisdictions</p>
+                  <p class="title">{{total_jurisdictions }}</p>
+                </div>
+              </div>
+              <div class="level-item has-text-centered">
+                <div>
+                  <p class="heading">Dispatch Agencies</p>
+                  <p class="title">{{total_agencies }}</p>
+                </div>
+              </div>
+              <div class="level-item has-text-centered">
+                <div>
+                  <p class="heading">Responding Units & Squads</p>
+                  <p class="title">{{total_units }}</p>
+                </div>
+              </div>
+            </nav>
+        </section>
+        </section>
+        <br>
+        <br>
+        <div class="columns">
+            <div class="column has-text-centered">
+              <strong><h2 class="title is-5">Latest Incidents:</h2></strong>
+              <br>
+              {% if latest_calls_list %}
+              <ul>
+                  {% for call in latest_calls_list %}
+                      <li><a href="/call/{{ call.id }}/"><strong>{{ call.city|title }}</strong>: {{ call.description|title }} on {{ call.sent|date }} </a></li>
+                  {% endfor %}
+                  {% else %}
+                  <p>No 911 calls are available.</p>
+                  </ul>       
+              {% endif %}
+            </div>
+            <div class="column">
+              <script type="text/javascript">
+                function map_init(map, options) {
+                {% for call in latest_calls_list %}
+                function customTip() {
+                    this.unbindTooltip();
+                    if(!this.isPopupOpen()) this.bindTooltip('{{ call.description }}').openTooltip();
+                }
+                
+                function customPop() {
+                    this.unbindTooltip();
+                }
+                    var lat = "{{ call.lat }}";
+                    var lon = "{{ call.lon }}";
+                    var marker = L.marker([lat, lon], title='{{ call.description }}')
+                    marker.bindPopup('<a href="/call/{{ call.id }}/">{{ call.description }}</a> <br>{{ call.address }}, {{ call.city }} {{ call.state }}<br>{{ call.sent }}</a>').openPopup();
+                    marker.addTo(map);
+                    marker.on('click', customPop);
+                    marker.on('mouseover', customTip);
+                    
+                    map.setView([lat, lon], 8);
+               {% endfor %}
+                }
+              </script>
+              {% leaflet_map "map" callback="map_init" %}      
+            </div>
+            <div class="column has-text-centered"><strong><h2 class="title is-5">Dispatch Agencies:</h2></strong>
+              <br>
+              {% if agency_list %}
+              {% for agency in agency_list %}
+              <ul>
+                <li><a href="/agency/{{ agency.id }}/">{{ agency.name }}</a></li>
+              </ul>
+              {% endfor %}
+              {% else %}
+              <p>No agencies are available.</p>
+              {% endif %}
+              </div>
+        </div>
+    </body>
+{% include "calls/footer.html" %}
